@@ -2,7 +2,6 @@
 #'
 #' @param X_train (dpylyr dataframe) X_train dateframe - Required
 #' @param X_test (dpylyr dataframe)  X_test dataframe - Default None
-#' @param auto (boolean) If true we will automatically decide how to process columns, 
 #'
 #' @return (tuple) Tuple containing two dataframes (X_train, X_test)
 #' 
