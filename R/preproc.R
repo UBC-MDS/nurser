@@ -19,6 +19,24 @@
 # >>> X_train, X_test = preproc(X_train, X_test, auto=True)
 
 
+
+
+#' Preproc
+#'
+#' @param X_train (dpylyr dataframe) X_train dateframe - Required
+#' @param X_test (dpylyr dataframe)  X_test dataframe - Default None
+#' @param auto (boolean) If true we will automatically decide how to process columns, 
+#' @param OHE (list)
+#' @param standard_scale (list)
+#' @param robust_scale (list)
+#' @param numerical_impute (list)
+#' @param categegorical_impute (list)
+#' @param label_encode (dictionary)
+#'
+#' @return
+#' @export
+#'
+#' @examples
 preproc <- function(X_train, X_test=None, auto=False, OHE=list(), standard_scale=list(), robust_scale=list(), numerical_impute=list(), categegorical_impute=list(), label_encode={}) {
   X_train
 }
