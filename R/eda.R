@@ -14,6 +14,6 @@
 #' result = eda(my_data)
 #' hist_tic = result$histograms$tic
 #' stats_tic = result$stats$tic
-eda <- function(data) {
+eda <- function(input_data) {
 
 }

@@ -4,7 +4,7 @@
 \alias{eda}
 \title{Eda}
 \usage{
-eda(data)
+eda(input_data)
 }
 \arguments{
 \item{input_data}{(dpylyr dataframe) input dataframe to be analyzed- Required}

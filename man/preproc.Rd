@@ -4,7 +4,7 @@
 \alias{preproc}
 \title{Preproc}
 \usage{
-preproc(X_train, X_test = None)
+preproc(X_train, X_test = NULL)
 }
 \arguments{
 \item{X_train}{(dpylyr dataframe) X_train dateframe - Required}
@@ -18,6 +18,8 @@ preproc(X_train, X_test = None)
 Preproc
 }
 \examples{
+X_train <- vector(mode="list", length=1)
+X_test <- vector(mode="list", length=1)
 result = preproc(X_train, X_test)
 processed_X_train = result[0]
 processed_X_test = result[1]
