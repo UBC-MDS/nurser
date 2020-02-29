@@ -77,6 +77,7 @@ However, the functions herein streamline and automate the front-end machine lear
 
 --- 
 
+- testhat 
 
 ### Usage
 

@@ -72,6 +72,8 @@ machine learning pipeline for use with any machine learning package.
 
 -----
 
+  - testhat
+
 ### Usage
 
 -----
