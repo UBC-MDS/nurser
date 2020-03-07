@@ -8,9 +8,6 @@
 #' imputed data of different methods
 #' @export
 #'
-#' @examples
-#' my_data = data.frame(...)
-#' imputed_data = impute_summary(my_data)
 
 impute_summary <- function(df){
   #Check Input
@@ -35,7 +32,7 @@ impute_summary <- function(df){
   nan_counts <- rbind(col_counts, total_count)
 
   ##over rows
-  nan_rows <- seq_along(1:nrow(df)) * !complete.cases(df)
+  nan_rows <- seq_along(1:nrow(df)) * !stats::complete.cases(df)
   nan_rowindex <- c()
   for(i in 1:nrow(df)){
     if (nan_rows[i] != 0){
@@ -45,7 +42,7 @@ impute_summary <- function(df){
   nan_rowindex <- data.frame(NaN_Rows = nan_rowindex)
 
   #Perform imputation using different methods
-  columns <- df %>% colnames()
+  columns <- colnames(df)
 
   ##Hmisc package - simple imputation
   hmisc_mean <- list()
@@ -56,7 +53,7 @@ impute_summary <- function(df){
 
   for(i in columns){
     hmisc_mean[[i]] <- Hmisc::impute(df[[i]], mean)
-    hmisc_median[[i]] <- Hmisc::impute(df[[i]], median)
+    hmisc_median[[i]] <- Hmisc::impute(df[[i]], stats::median)
     hmisc_max[[i]] <- Hmisc::impute(df[[i]], max)
     hmisc_min[[i]] <- Hmisc::impute(df[[i]], min)
     hmisc_random[[i]] <- Hmisc::impute(df[[i]], 'random')
@@ -73,7 +70,7 @@ impute_summary <- function(df){
   mi_multimp <- mi::complete(mi_multimp)[4][[1]][1:length(columns)]
 
   ##mice pacakge - pmm
-  mice_pmm <- mice::complete(mice(df,m=1), 1)
+  mice_pmm <- mice::complete(mice::mice(df,m=1), 1)
 
   ##missForest package - non-parametric random forest
   missForest_randomforest <- missForest::missForest(df)$ximp
