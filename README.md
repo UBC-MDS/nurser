@@ -52,7 +52,7 @@ functions:
 
 | Function         | Input                    | Output                                                                        | Description                                                                                           |
 | ---------------- | ------------------------ | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `eda`            | \- a tibble or dataframe | \- an R dictionary                                                            | \- Dictionary that contains histogram and summary statistics for each column                          |
+| `eda`            | \- a dataframe           | \- a list that contains histogram and summary statistics for each column      | \- Functionality for easy explanatory data analysis.                                                  |
 | `impute_summary` | \- a dataframe           | \- a list with summary statistics and outputs of different imputation methods | \- Functionality for consolidating several imputation methods                                         |
 | `preproc`        | \- a tibble or dataframe | \- a tibble with preprocessed features                                        | \- Functionality for automatic feature preprocessing detection and user defined feature preprocessing |
 
@@ -80,7 +80,7 @@ machine learning pipeline for use with any machine learning package.
 
 -----
 
-  - testhat
+  - ggplot2=3.2.1
 
 ### Usage
 
