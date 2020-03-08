@@ -1,6 +1,3 @@
-# library(tidyverse)
-# library(dplyr)
-library(fastDummies)
 #' Preproc
 #'
 #' @param X (dpylyr dataframe) X_train dateframe - Required
