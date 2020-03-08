@@ -81,6 +81,11 @@ machine learning pipeline for use with any machine learning package.
 -----
 
   - ggplot2=3.2.1
+  - testhat=2.3.2
+  - fastDummies=1.6.0
+  - dplyr=0.8.4
+  - tidyverse=1.3.0
+
 
 ### Usage
 
