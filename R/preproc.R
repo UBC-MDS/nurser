@@ -1,5 +1,5 @@
-library(tidyverse)
-library(dplyr)
+# library(tidyverse)
+# library(dplyr)
 library(fastDummies)
 #' Preproc
 #'
@@ -13,7 +13,7 @@ library(fastDummies)
 #' result = preproc(mtcars)
 #' processed_X = result
   preproc <- function(X) {
-    if (!is.data.frame(X) & !is_tibble(X)) {
+    if (!is.data.frame(X) & !tibble::is_tibble(X)) {
       stop("X_train must be of type dataframe")
     }
     column_types <- sapply(X, class)
