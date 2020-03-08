@@ -1,19 +1,29 @@
 #' Preproc
 #'
-#' @param X_train (dpylyr dataframe) X_train dateframe - Required
-#' @param X_test (dpylyr dataframe)  X_test dataframe - Default None
+#' @param X (dpylyr dataframe) X_train dateframe - Required
 #'
-#' @return (tuple) Tuple containing two dataframes (X_train, X_test)
+#' @return (dataframe) Preprocessed df with scaling or encoding
 #'
 #' @export
 #'
 #' @examples
-#' X_train <- vector(mode="list", length=1)
-#' X_test <- vector(mode="list", length=1)
-#' result = preproc(X_train, X_test)
-#' processed_X_train = result[0]
-#' processed_X_test = result[1]
-  preproc <- function(X_train, X_test=NULL) {
-  X_train
+#' result = preproc(mtcars)
+#' processed_X = result
+  preproc <- function(X) {
+    if (!is.data.frame(X) & !tibble::is_tibble(X)) {
+      stop("X_train must be of type dataframe")
+    }
+    column_types <- sapply(X, class)
+    i<-0
+    for (class in column_types) {
+      i<-i+1
+      if (class == "numeric") {
+        X[[i]] <- scale(X[[i]])
+      }
+    }
+    if ("factor" %in% column_types | "character" %in% column_types) {
+      X <- fastDummies::dummy_cols(X, remove_first_dummy=TRUE, remove_selected_columns = TRUE)
+    }
+    X
 }
 
