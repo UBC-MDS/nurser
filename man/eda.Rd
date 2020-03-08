@@ -16,11 +16,9 @@ eda(input_data)
 Eda
 }
 \examples{
-my_data <- vector(mode="list", length=1)
-names(my_data) <- c("tic")
-my_data[[1]] <- c(1,2,3,4,5)
 
-result = eda(my_data)
-hist_tic = result$histograms$tic
-stats_tic = result$stats$tic
+
+result = eda(mtcars)
+hist_mpg = result$histograms[[1]]
+stats_mpg = result$stats$mpg
 }
