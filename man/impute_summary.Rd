@@ -16,3 +16,18 @@ imputed data of different methods
 \description{
 Consolidates several different imputation methods inlcuding summary statistics
 }
+\examples{
+df <- data.frame(one = rnorm(20, 3, 10),
+                  two = rnorm(20, 1, 5),
+                  three = rnorm(20, 10, 2),
+                  four = rnorm(20, 20, 6))
+
+df[c(3:5,15, 19), "two"] <- NA
+df[c(2, 8:10), "three"] <- NA
+df[c(3:8, 17), "four"] <- NA
+
+summary_doc <- impute_summary(df)
+na_counts <- summary_doc$nan_counts
+na_row_locations <- summary_doc$nan_rowindex
+imputed_df_method_1 <- summary_doc$hmisc_mean
+}
