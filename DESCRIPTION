@@ -2,10 +2,17 @@ Package: nurser
 Title: Make EDA process
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Merve",
-           family = "Sahin",
-           role = c("aut", "cre"),
-           email = "kymerve16@gmail.com")
+    c(
+    person("Sahin", "Merve", 
+            email = "kymerve16@gmail.com",
+            role = "aut"),
+    person("Ribner", "Elliott", 
+            email = "el888@gmail.com",
+            role = "aut"),
+    person("Dytyniak", "Evhen", 
+            email = "evhen.dytyniak@shaw.ca",
+            role = c("aut", "cre"))
+    )
 Description: Making visualisation of the features, detecting the outliers and applying preproccesing.
 License: MIT + file LICENSE
 Encoding: UTF-8
