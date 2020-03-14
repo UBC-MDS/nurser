@@ -22,6 +22,8 @@ Imports:
     missForest,
     dplyr,
     fastDummies,
-    tibble
+    tibble,
+    ggplot2,
+    rlang
 URL: https://github.com/UBC-MDS/nurser
 BugReports: https://github.com/UBC-MDS/nurser/issues
