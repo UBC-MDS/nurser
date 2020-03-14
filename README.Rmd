@@ -30,6 +30,8 @@ An R package for streamlining the front end of the machine learning workflow.
 
 Common to the front end of most machine learning pipelines is an exploratory data analysis (EDA) and feature preprocessing. EDA's facilitate a better understanding of the data being analyzed and allows for a targeted and more robust model development while feature imputation and preprocessing is a requirement for many machine learning alogirthms. `nurser` aims to streamline the front end of the machine learning pipeline by generating descriptive summary tables and figures, various feature imputation summaries, and automating preprocessing. Automated preprocessing detection has been implemented to minimize time and optimize the processing methods used. The functions in `nurser` were developed to provide useful and informative metrics that are applicable to a wide array of datasets.   
 
+A vignettes for this package can be found [here](https://ubc-mds.github.io/nurser/).
+
 _`nurser` was developed as part of DSCI 524 of the MDS program at UBC._  
 
 
@@ -86,16 +88,139 @@ However, the functions herein streamline and automate the front-end machine lear
 
 --- 
 
-- ggplot2=3.2.1
+  - ggplot2=3.3.0  
+  - tibble=2.1.3  
+  - fastDummies=1.6.1  
+  - stats=3.6.2  
+  - Hmisc=4.3-1  
+  - mi=1.0  
+  - mice=3.8.0  
+  - missForest=1.4  
 
 ### Usage
 
 ---  
 
-```{r example}
-#library(nurser)
-## basic example code
+```{r setup}
+library(nurser)
+library(magrittr)
 ```
+
+# `eda`
+
+The `eda()` function return a list that contains histogram and summary statistics for a given column. Let's see it in action! 
+
+</br>
+
+To view a histogram of a feature:
+
+```{r include = FALSE, message = FALSE}
+result <- eda(mtcars)
+```
+```{}
+result <- eda(mtcars)
+```
+```{r eda1, message = FALSE}
+hist_mpg <- result$histograms[[1]]
+hist_mpg
+```
+</br>
+
+Now let's see the summary statistics of this feature:  
+
+```{r eda2}
+stats_mpg = result$stats$mpg
+stats_mpg
+```
+
+---
+
+# `impute_summary`
+
+Let's import some continuous data to work with,
+```{r impute1}
+iris_data <- iris[1:4]
+```
+
+and add some missing values, 
+
+```{r impute2}
+iris_missing <- 
+  as.data.frame(lapply(iris_data, 
+                       function(x) x[sample(c(TRUE, NA),
+                                            size = length(x), 
+                                            replace = TRUE,
+                                            prob = c(0.75, 0.25))]))
+```
+
+Now, let's take a look at the data to in fact see if the missing values were generated and where they are:
+
+```{r impute3}
+iris_missing %>% head(10)
+```
+
+Great, we have some missing values to compute - let's call `impute_summary` to get some summary statistics and outputs from different methods.
+
+```{r impute4, include = FALSE}
+iris_imputed <- impute_summary(iris_missing)
+```
+
+```{}
+iris_imputed <- impute_summary(iris_missing)
+```
+
+`impute_summary()` provides some useful summary statistics and also several imputed dataframes that can be accessed by the impute_summary object attributes. The imputed data frames provided include:
+
+  - mean,   
+  - median,   
+  - max,   
+  - min,  
+  - random,  
+  - multiple imputation,   
+  - pmm, and  
+  - random forest  
+
+Let's first take a look at the summaries, which can be accessed using __`$nan_counts`__ (NA counts for each feature) and __`$nan_rowindex`__ (rows that contain NA values):
+
+```{r impute5}
+iris_imputed$nan_counts
+
+iris_imputed$nan_rowindex %>% head(5)
+```
+
+</br>
+
+Now, let's take a look at two of the imputed data frames, __`mean`__ and __`multiple imputation`__:
+
+```{r impute6}
+iris_imputed$hmisc_mean %>% head(10)
+
+iris_imputed$mi_multimp %>% head(10)
+```
+
+
+---
+
+# `preproc`
+
+The `preproc()` function returns a tibble with preprocessed features. Simply call `preproc` on your data!
+
+Let's first view our data before preprocessing:
+
+```{r}
+head(iris)
+```
+
+</br>
+
+and now after calling `preproc`:  
+```{r}
+results = preproc(iris)
+head(results)
+```
+
+
+---
 
 ### Documentation
 

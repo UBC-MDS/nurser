@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/package_name-vignette.html">package_name-vignette</a>
+      <a href="articles/nurser-vignette.html">nurser-vignette</a>
     </li>
   </ul>
 </li>
@@ -78,6 +78,7 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div id="nurser" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#nurser" class="anchor"></a><code>nurser</code>
@@ -91,6 +92,7 @@
 <a href="#summary" class="anchor"></a>Summary</h3>
 <hr>
 <p>Common to the front end of most machine learning pipelines is an exploratory data analysis (EDA) and feature preprocessing. EDA’s facilitate a better understanding of the data being analyzed and allows for a targeted and more robust model development while feature imputation and preprocessing is a requirement for many machine learning alogirthms. <code>nurser</code> aims to streamline the front end of the machine learning pipeline by generating descriptive summary tables and figures, various feature imputation summaries, and automating preprocessing. Automated preprocessing detection has been implemented to minimize time and optimize the processing methods used. The functions in <code>nurser</code> were developed to provide useful and informative metrics that are applicable to a wide array of datasets.</p>
+<p>A vignettes for this package can be found <a href="https://ubc-mds.github.io/nurser/">here</a>.</p>
 <p><em><code>nurser</code> was developed as part of DSCI 524 of the MDS program at UBC.</em></p>
 </div>
 <div id="installation" class="section level3">
@@ -171,22 +173,180 @@
 <a href="#dependencies" class="anchor"></a>Dependencies</h3>
 <hr>
 <ul>
-<li>ggplot2=3.2.1</li>
+<li>ggplot2=3.3.0<br>
+</li>
+<li>tibble=2.1.3<br>
+</li>
+<li>fastDummies=1.6.1<br>
+</li>
+<li>stats=3.6.2<br>
+</li>
+<li>Hmisc=4.3-1<br>
+</li>
+<li>mi=1.0<br>
+</li>
+<li>mice=3.8.0<br>
+</li>
+<li>missForest=1.4</li>
 </ul>
 </div>
 <div id="usage" class="section level3">
 <h3 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h3>
 <hr>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#library(nurser)</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">## basic example code</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nurser)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a></code></pre></div>
 </div>
+</div>
+<div id="eda" class="section level1">
+<h1 class="hasAnchor">
+<a href="#eda" class="anchor"></a><code>eda</code>
+</h1>
+<p>The <code><a href="reference/eda.html">eda()</a></code> function return a list that contains histogram and summary statistics for a given column. Let’s see it in action!</p>
+<p></p>
+<p>To view a histogram of a feature:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">result &lt;-<span class="st"> </span><span class="kw"><a href="reference/eda.html">eda</a></span>(mtcars)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">hist_mpg &lt;-<span class="st"> </span>result<span class="op">$</span>histograms[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">hist_mpg</a></code></pre></div>
+<p><img src="reference/figures/README-eda1-1.png" width="100%"></p>
+<p>Now let’s see the summary statistics of this feature:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">stats_mpg =<span class="st"> </span>result<span class="op">$</span>stats<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">stats_mpg</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   10.40   15.43   19.20   20.09   22.80   33.90</span></a></code></pre></div>
+<hr>
+</div>
+<div id="impute_summary" class="section level1">
+<h1 class="hasAnchor">
+<a href="#impute_summary" class="anchor"></a><code>impute_summary</code>
+</h1>
+<p>Let’s import some continuous data to work with,</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">iris_data &lt;-<span class="st"> </span>iris[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a></code></pre></div>
+<p>and add some missing values,</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">iris_missing &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(iris_data, </a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">                       <span class="cf">function</span>(x) x[<span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="ot">TRUE</span>, <span class="ot">NA</span>),</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">                                            <span class="dt">size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(x), </a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">                                            <span class="dt">replace =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">                                            <span class="dt">prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.75</span>, <span class="fl">0.25</span>))]))</a></code></pre></div>
+<p>Now, let’s take a look at the data to in fact see if the missing values were generated and where they are:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">iris_missing <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; 1           5.1         3.5          1.4         0.2</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; 2            NA          NA           NA         0.2</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; 3           4.7         3.2          1.3         0.2</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; 4            NA         3.1           NA         0.2</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; 5           5.0         3.6          1.4         0.2</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; 6           5.4         3.9           NA          NA</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; 7           4.6         3.4          1.4         0.3</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 8           5.0         3.4           NA         0.2</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 9           4.4         2.9          1.4         0.2</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 10           NA         3.1          1.5         0.1</span></a></code></pre></div>
+<p>Great, we have some missing values to compute - let’s call <code>impute_summary</code> to get some summary statistics and outputs from different methods.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">iris_imputed &lt;-<span class="st"> </span><span class="kw"><a href="reference/impute_summary.html">impute_summary</a></span>(iris_missing)</a></code></pre></div>
+<p><code><a href="reference/impute_summary.html">impute_summary()</a></code> provides some useful summary statistics and also several imputed dataframes that can be accessed by the impute_summary object attributes. The imputed data frames provided include:</p>
+<ul>
+<li>mean,<br>
+</li>
+<li>median,<br>
+</li>
+<li>max,<br>
+</li>
+<li>min,<br>
+</li>
+<li>random,<br>
+</li>
+<li>multiple imputation,<br>
+</li>
+<li>pmm, and<br>
+</li>
+<li>random forest</li>
+</ul>
+<p>Let’s first take a look at the summaries, which can be accessed using <strong><code>$nan_counts</code></strong> (NA counts for each feature) and <strong><code>$nan_rowindex</code></strong> (rows that contain NA values):</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">iris_imputed<span class="op">$</span>nan_counts</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt;              NaN_count</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; Sepal.Length        41</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; Sepal.Width         32</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; Petal.Length        31</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Petal.Width         38</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Total              142</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">iris_imputed<span class="op">$</span>nan_rowindex <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;   NaN_Rows</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; 1        2</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; 2        4</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; 3        6</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 4        8</span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; 5       10</span></a></code></pre></div>
+<p></p>
+<p>Now, let’s take a look at two of the imputed data frames, <strong><code>mean</code></strong> and <strong><code>multiple imputation</code></strong>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">iris_imputed<span class="op">$</span>hmisc_mean <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; 1      5.100000    3.500000     1.400000    0.200000</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; 2      5.851376    3.090678     3.796639    0.200000</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; 3      4.700000    3.200000     1.300000    0.200000</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 4      5.851376    3.100000     3.796639    0.200000</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; 5      5.000000    3.600000     1.400000    0.200000</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; 6      5.400000    3.900000     3.796639    1.220536</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; 7      4.600000    3.400000     1.400000    0.300000</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; 8      5.000000    3.400000     3.796639    0.200000</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; 9      4.400000    2.900000     1.400000    0.200000</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; 10     5.851376    3.100000     1.500000    0.100000</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">iris_imputed<span class="op">$</span>mi_multimp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; 1      5.100000    3.500000     1.400000  0.20000000</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; 2      4.339885    2.905541     1.909153  0.20000000</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; 3      4.700000    3.200000     1.300000  0.20000000</span></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; 4      4.673642    3.100000     1.376124  0.20000000</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; 5      5.000000    3.600000     1.400000  0.20000000</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt; 6      5.400000    3.900000     1.346952 -0.04829088</span></a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; 7      4.600000    3.400000     1.400000  0.30000000</span></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; 8      5.000000    3.400000     1.986463  0.20000000</span></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt; 9      4.400000    2.900000     1.400000  0.20000000</span></a>
+<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt; 10     4.588924    3.100000     1.500000  0.10000000</span></a></code></pre></div>
+<hr>
+</div>
+<div id="preproc" class="section level1">
+<h1 class="hasAnchor">
+<a href="#preproc" class="anchor"></a><code>preproc</code>
+</h1>
+<p>The <code><a href="reference/preproc.html">preproc()</a></code> function returns a tibble with preprocessed features. Simply call <code>preproc</code> on your data!</p>
+<p>Let’s first view our data before preprocessing:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(iris)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; 1          5.1         3.5          1.4         0.2  setosa</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; 2          4.9         3.0          1.4         0.2  setosa</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 3          4.7         3.2          1.3         0.2  setosa</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 4          4.6         3.1          1.5         0.2  setosa</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 5          5.0         3.6          1.4         0.2  setosa</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 6          5.4         3.9          1.7         0.4  setosa</span></a></code></pre></div>
+<p></p>
+<p>and now after calling <code>preproc</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">results =<span class="st"> </span><span class="kw"><a href="reference/preproc.html">preproc</a></span>(iris)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(results)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species_versicolor</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; 1   -0.8976739  1.01560199    -1.335752   -1.311052                  0</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 2   -1.1392005 -0.13153881    -1.335752   -1.311052                  0</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 3   -1.3807271  0.32731751    -1.392399   -1.311052                  0</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 4   -1.5014904  0.09788935    -1.279104   -1.311052                  0</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; 5   -1.0184372  1.24503015    -1.335752   -1.311052                  0</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; 6   -0.5353840  1.93331463    -1.165809   -1.048667                  0</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt;   Species_virginica</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 1                 0</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; 2                 0</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; 3                 0</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; 4                 0</span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt; 5                 0</span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt; 6                 0</span></a></code></pre></div>
+<hr>
 <div id="documentation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h3>
 <hr>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -215,7 +375,9 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Merve Sahin <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Sahin Merve <br><small class="roles"> Author </small>  </li>
+<li>Ribner Elliott <br><small class="roles"> Author </small>  </li>
+<li>Dytyniak Evhen <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
@@ -230,7 +392,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Merve Sahin.</p>
+  <p>Developed by Sahin Merve, Ribner Elliott, Dytyniak Evhen.</p>
 </div>
 
 <div class="pkgdown">

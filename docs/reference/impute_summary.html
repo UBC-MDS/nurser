@@ -92,7 +92,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/package_name-vignette.html">package_name-vignette</a>
+      <a href="../articles/nurser-vignette.html">nurser-vignette</a>
     </li>
   </ul>
 </li>
@@ -142,12 +142,38 @@
     <p>a list object with attributes containing summary statistics and
 imputed data of different methods</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>one</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>20</span>, <span class='fl'>3</span>, <span class='fl'>10</span>),
+                  <span class='kw'>two</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>20</span>, <span class='fl'>1</span>, <span class='fl'>5</span>),
+                  <span class='kw'>three</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>20</span>, <span class='fl'>10</span>, <span class='fl'>2</span>),
+                  <span class='kw'>four</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>20</span>, <span class='fl'>20</span>, <span class='fl'>6</span>))
+
+<span class='no'>df</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>:<span class='fl'>5</span>,<span class='fl'>15</span>, <span class='fl'>19</span>), <span class='st'>"two"</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='no'>df</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>8</span>:<span class='fl'>10</span>), <span class='st'>"three"</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='no'>df</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>:<span class='fl'>8</span>, <span class='fl'>17</span>), <span class='st'>"four"</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+
+<span class='no'>summary_doc</span> <span class='kw'>&lt;-</span> <span class='fu'>impute_summary</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt; 
+#&gt;  iter imp variable
+#&gt;   1   1  two  three  four
+#&gt;   2   1  two  three  four
+#&gt;   3   1  two  three  four
+#&gt;   4   1  two  three  four
+#&gt;   5   1  two  three  four
+#&gt;   missForest iteration 1 in progress...done!
+#&gt;   missForest iteration 2 in progress...done!
+#&gt;   missForest iteration 3 in progress...done!
+#&gt;   missForest iteration 4 in progress...done!
+#&gt;   missForest iteration 5 in progress...done!
+#&gt;   missForest iteration 6 in progress...done!</div><div class='input'><span class='no'>na_counts</span> <span class='kw'>&lt;-</span> <span class='no'>summary_doc</span>$<span class='no'>nan_counts</span>
+<span class='no'>na_row_locations</span> <span class='kw'>&lt;-</span> <span class='no'>summary_doc</span>$<span class='no'>nan_rowindex</span>
+<span class='no'>imputed_df_method_1</span> <span class='kw'>&lt;-</span> <span class='no'>summary_doc</span>$<span class='no'>hmisc_mean</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
@@ -156,7 +182,7 @@ imputed data of different methods</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Merve Sahin.</p>
+  <p>Developed by Sahin Merve, Ribner Elliott, Dytyniak Evhen.</p>
 </div>
 
 <div class="pkgdown">
