@@ -5,6 +5,10 @@
 
 <!-- badges: start -->
 
+[![R build
+status](https://github.com/UBC-MDS/nurser/workflows/R-CMD-check/badge.svg)](https://github.com/UBC-MDS/nurser/actions)
+
+[![codecov](https://codecov.io/gh/UBC-MDS/nurser/branch/master/graph/badge.svg)](https://codecov.io/gh/UBC-MDS/nurser)
 <!-- badges: end -->
 
 An R package for streamlining the front end of the machine learning
@@ -81,11 +85,6 @@ machine learning pipeline for use with any machine learning package.
 -----
 
   - ggplot2=3.2.1
-  - testhat=2.3.2
-  - fastDummies=1.6.0
-  - dplyr=0.8.4
-  - tidyverse=1.3.0
-
 
 ### Usage
 

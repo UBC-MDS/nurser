@@ -16,6 +16,9 @@ knitr::opts_chunk$set(
 # `nurser`
 
 <!-- badges: start -->
+[![R build status](https://github.com/UBC-MDS/nurser/workflows/R-CMD-check/badge.svg)](https://github.com/UBC-MDS/nurser/actions)
+
+[![codecov](https://codecov.io/gh/UBC-MDS/nurser/branch/master/graph/badge.svg)](https://codecov.io/gh/UBC-MDS/nurser)
 <!-- badges: end -->
 
 An R package for streamlining the front end of the machine learning workflow.
