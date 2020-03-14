@@ -30,6 +30,8 @@ An R package for streamlining the front end of the machine learning workflow.
 
 Common to the front end of most machine learning pipelines is an exploratory data analysis (EDA) and feature preprocessing. EDA's facilitate a better understanding of the data being analyzed and allows for a targeted and more robust model development while feature imputation and preprocessing is a requirement for many machine learning alogirthms. `nurser` aims to streamline the front end of the machine learning pipeline by generating descriptive summary tables and figures, various feature imputation summaries, and automating preprocessing. Automated preprocessing detection has been implemented to minimize time and optimize the processing methods used. The functions in `nurser` were developed to provide useful and informative metrics that are applicable to a wide array of datasets.   
 
+A vignettes for this package can be found [here](https://ubc-mds.github.io/nurser/).
+
 _`nurser` was developed as part of DSCI 524 of the MDS program at UBC._  
 
 

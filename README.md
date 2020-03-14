@@ -31,6 +31,9 @@ and optimize the processing methods used. The functions in `nurser` were
 developed to provide useful and informative metrics that are applicable
 to a wide array of datasets.
 
+A vignettes for this package can be found
+[here](https://ubc-mds.github.io/nurser/).
+
 *`nurser` was developed as part of DSCI 524 of the MDS program at UBC.*
 
 ### Installation:
