@@ -16,9 +16,18 @@ test_that("one hot encodes categorical text columns", {
   band <- dplyr::band_instruments
   result_df <- preproc(band)
   columns <- colnames(result_df)
-  print(band)
   for (column in columns) {
     expect_true(column %in% c("name_Paul", "name_Keith", "name_John", "plays_bass", "plays_guitar"))
   }
   expect_true(length(columns) == 3)
+})
+
+test_that("label encoder changes to specified levels", {
+  band <- dplyr::band_instruments
+  levels <- c( "bass", "guitar", "drums")
+  band$plays <- factor(band$plays, levels = levels)
+  result_df <- preproc(band)
+  expect_equal(result_df$plays[1], result_df$plays[3])
+  expect_gt(result_df$plays[1], result_df$plays[2])
+  expect_true(is.numeric(result_df$plays[1]))
 })
