@@ -10,21 +10,22 @@
 #' @examples
 #'
 #'
-#' result = eda(mtcars)
-#' hist_mpg = result$histograms[[1]]
-#' stats_mpg = result$stats$mpg
+#' result <- eda(mtcars)
+#' hist_mpg <- result$histograms[[1]]
+#' stats_mpg <- result$stats$mpg
 eda <- function(input_data) {
+
   results <- vector('list', 2)
   names(results) <- c("histograms", "stats")
 
   # create histograms for each column
   histograms <- vector('list', length = ncol(input_data))
   for (i in seq_along(input_data)) {
-    message(i)
+    # message(i)
     histograms[[i]] <- local({
       i <- i
       p1 <- ggplot2::ggplot(input_data, ggplot2::aes(x = input_data[[i]])) +
-        ggplot2::geom_histogram() +
+        ggplot2::geom_histogram(stat="count") +
         ggplot2::xlab(colnames(input_data)[i])
     })
   }

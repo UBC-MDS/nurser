@@ -18,7 +18,7 @@ Eda
 \examples{
 
 
-result = eda(mtcars)
-hist_mpg = result$histograms[[1]]
-stats_mpg = result$stats$mpg
+result <- eda(mtcars)
+hist_mpg <- result$histograms[[1]]
+stats_mpg <- result$stats$mpg
 }
