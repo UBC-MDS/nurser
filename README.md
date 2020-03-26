@@ -250,7 +250,9 @@ iris_imputed$mi_multimp %>% head(10)
 # `preproc`
 
 The `preproc()` function returns a tibble with preprocessed features.
-Simply call `preproc` on your data\!
+Simply call `preproc` on your data\! 
+
+It will scale all numerical rows. For any rows that are factored it will apply label encoding first before scaling. For character rows that are not factored it will provide one hot encoding, while dropping a single column.
 
 Let’s first view our data before preprocessing:
 

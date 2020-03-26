@@ -2,17 +2,20 @@
 #'
 #' @param X (dpylyr dataframe) X_train dateframe - Required
 #'
+#'
 #' @return (dataframe) Preprocessed df with scaling or encoding
 #'
 #' @export
 #'
 #' @examples
-#' result = preproc(mtcars)
-#' processed_X = result
+#' processed_X <- preproc(mtcars)
+#' 
   preproc <- function(X) {
     if (!is.data.frame(X) & !tibble::is_tibble(X)) {
       stop("X_train must be of type dataframe")
     }
+    indx <- sapply(X, is.factor)
+    X[indx] <- lapply(X[indx], function(x) as.numeric(x))
     column_types <- sapply(X, class)
     i<-0
     for (class in column_types) {
