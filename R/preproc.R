@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-#' result = preproc(mtcars)
-#' processed_X = result
+#' processed_X <- preproc(mtcars)
+#' 
   preproc <- function(X) {
     if (!is.data.frame(X) & !tibble::is_tibble(X)) {
       stop("X_train must be of type dataframe")
